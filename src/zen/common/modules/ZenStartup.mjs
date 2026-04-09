@@ -5,6 +5,7 @@
 import checkForZenUpdates, {
   createWindowUpdateAnimation,
 } from "chrome://browser/content/ZenUpdates.mjs";
+import applyLegacyMacPerformanceProfile from "chrome://browser/content/ZenLegacyPerformance.mjs";
 
 class ZenStartup {
   #watermarkIgnoreElements = ["zen-toast-container"];
@@ -16,6 +17,7 @@ class ZenStartup {
   });
 
   init() {
+    applyLegacyMacPerformanceProfile();
     this.openWatermark();
     this.#changeSidebarLocation();
     this.#zenInitBrowserLayout();

@@ -41,6 +41,14 @@
 - name: zen.startup.smooth-scroll-in-tabs
   value: true
 
+- name: zen.performance.legacy-mac.auto-detect
+  value: true
+  hidden: true
+
+- name: zen.performance.legacy-mac.enabled
+  value: false
+  hidden: true
+
 - name: zen.tabs.open-pinned-in-new-tab
   value: true
 

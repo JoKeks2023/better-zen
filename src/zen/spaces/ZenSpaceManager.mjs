@@ -1667,6 +1667,29 @@ class nsZenWorkspaces {
     resolve();
   }
 
+  #setWorkspaceTabsActivity(workspaceId, active) {
+    if (!workspaceId) {
+      return;
+    }
+
+    for (const tab of this.allStoredTabs) {
+      if (tab.getAttribute("zen-workspace-id") !== workspaceId) {
+        continue;
+      }
+
+      if (tab.hasAttribute("zen-essential") || !tab.linkedBrowser) {
+        continue;
+      }
+
+      tab.linkedBrowser.zenModeActive = active;
+      try {
+        tab.linkedBrowser.docShellIsActive = active;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }
+
   _cancelSwipeAnimation() {
     this.#animateTabs(this.getActiveWorkspaceFromCache(), true);
   }
@@ -1715,9 +1738,11 @@ class nsZenWorkspaces {
       onInit,
       previousWorkspace.uuid
     );
+    this.#setWorkspaceTabsActivity(workspace.uuid, true);
     if (tabToSelect?.linkedBrowser) {
       gBrowser.warmupTab(tabToSelect);
     }
+    this.#setWorkspaceTabsActivity(previousWorkspace.uuid, false);
 
     // Update UI and state
     const previousWorkspaceIndex = workspaces.findIndex(

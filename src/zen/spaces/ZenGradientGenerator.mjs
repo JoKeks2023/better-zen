@@ -84,6 +84,10 @@ export class nsZenThemePicker extends nsZenMultiWindowFeature {
     "zen.theme.acrylic-elements",
     false
   );
+  #isLegacyMacPerformance = Services.prefs.getBoolPref(
+    "zen.performance.legacy-mac.enabled",
+    false
+  );
 
   #linePath = `M 51.373 27.395 L 367.037 27.395`;
   #sinePath = `M 51.373 27.395 C 60.14 -8.503 68.906 -8.503 77.671 27.395 C 86.438 63.293 95.205 63.293 103.971 27.395 C 112.738 -8.503 121.504 -8.503 130.271 27.395 C 139.037 63.293 147.803 63.293 156.57 27.395 C 165.335 -8.503 174.101 -8.503 182.868 27.395 C 191.634 63.293 200.4 63.293 209.167 27.395 C 217.933 -8.503 226.7 -8.503 235.467 27.395 C 244.233 63.293 252.999 63.293 261.765 27.395 C 270.531 -8.503 279.297 -8.503 288.064 27.395 C 296.83 63.293 305.596 63.293 314.363 27.395 C 323.13 -8.503 331.896 -8.503 340.662 27.395 M 314.438 27.395 C 323.204 -8.503 331.97 -8.503 340.737 27.395 C 349.503 63.293 358.27 63.293 367.037 27.395`;
@@ -1245,6 +1249,10 @@ export class nsZenThemePicker extends nsZenMultiWindowFeature {
   }
 
   get canBeTransparent() {
+    if (this.#isLegacyMacPerformance) {
+      return false;
+    }
+
     return (
       this.isMica ||
       window.matchMedia(
